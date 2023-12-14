@@ -1,8 +1,12 @@
-from typing import Union
-from fastapi import FastAPI
+from typing import Union, Annotated
+from fastapi import FastAPI, Depends
 from pydantic import BaseModel
+from setting import oauth2_scheme
+
 
 app = FastAPI()
+
+
 
 
 class User(BaseModel):
@@ -14,9 +18,9 @@ def read_root():
     return {"text"}
 
 @app.get("/items/{item_id}")
-def read_item(item_id: int, q: Union[str, None] = None):
+async def read_items(token: Annotated[str, Depends(oauth2_scheme)], item_id: int, q: Union[str, None] = None):
+    return{"access": token}
     return{"item_id": item_id, "q": q}
-
 
 @app.post("/login/")
 def sign_in(login: str, password: str):
