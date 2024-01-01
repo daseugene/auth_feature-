@@ -8,11 +8,6 @@ app = FastAPI()
 
 
 
-
-class User(BaseModel):
-    ...
-
-
 @app.get("/")
 def read_root():
     return {"text"}
